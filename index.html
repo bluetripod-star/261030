@@ -106,7 +106,7 @@ pencil:'<path class="dd" d="M8 28l3-8 15-15 5 5-15 15z M11 20l5 5 M23 8l5 5 M8 2
 fort:'<path class="dd" d="M4 31h28 M6 31v-14h4v4h4v-4h4v4h4v-4h4v4h4v-4h0v14 M15 31v-6q3-4 6 0v6"/><path class="dd" d="M24 8a4 4 0 1 0 6 3" style="stroke:#E06A80"/>',
 whoosh:'<path class="dd" d="M12 10q-1 13 1 15h17q3-1 2-7q-1-7-9-8z M16 14h5v5h-5z M2 14h6 M0 20h7 M3 26h6"/><circle class="dd" cx="17" cy="28" r="2.3"/><circle class="dd" cx="27" cy="28" r="2.3"/>'};
 /* 장소 이름으로 검색이 애매하면 여기에 검색어 지정 (네이버 공유 링크 https://naver.me/... 를 넣으면 그 장소로 바로 이동) */
-const MAPQ={"오하하하우스":"오하하하우스 수원","매산약방":"매산약방 수원","삼미락":"삼미락 수원역","에조치":"에조치 수원 행궁동","경안당":"경안당 수원 행궁동","럭희":"럭희 행궁동점","뮤니버스":"뮤니버스 행궁동","남문통닭 타임빌라스 수원점":"남문통닭 타임빌라스 수원점"};
+const MAPQ={"오하하하우스":"https://naver.me/574iuPuB","매산약방":"매산약방 수원","삼미락":"삼미락 수원역","에조치":"에조치 수원 행궁동","경안당":"경안당 수원 행궁동","럭희":"럭희 행궁동점","뮤니버스":"뮤니버스 행궁동","남문통닭 타임빌라스 수원점":"남문통닭 타임빌라스 수원점"};
 function mapUrl(n){const q=MAPQ[n];if(q&&q.startsWith("http"))return q;return "https://map.naver.com/p/search/"+encodeURIComponent(q||("수원 "+n))}
 const $=id=>document.getElementById(id);
 function show(s){["main","check","detail"].forEach(k=>$("s-"+k).style.display=k===s?"block":"none");window.scrollTo(0,0)}
