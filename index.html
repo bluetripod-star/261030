@@ -69,11 +69,15 @@ p{margin:0}
 
 <script>
 /* ===== 코스 데이터: 장소 정해지면 여기만 수정 ===== */
-/* [시간, 제목, 한마디, 장소(비우면 숨김), 아이콘, 배경색, 팁(선택)] */
+/* [시간, 제목, 한마디, 장소(비우면 숨김), 아이콘, 배경색, 팁(선택), 후보목록(선택: [[이름,설명],...])] */
 const COURSE={
   1:[
     ["16:00","수원역에서 만나기","얼른 갈게!","수원역","train","#FFF1B8"],
-    ["18:00","마싯게 저녁식사~","통닭 먹자! 배고프게 와","남문통닭 타임빌라스 수원점","bowl","#FFD6DC"],
+    ["18:00","마싯게 저녁식사~","셋 중에 골라줘!","","bowl","#FFD6DC","",[
+      ["삼미락","낙곱새, 수원역 바로 앞"],
+      ["남문통닭 타임빌라스 수원점","수원 왕갈비통닭, 역이랑 연결"],
+      ["매산약방","한옥 한식이랑 전통주 칵테일"]
+    ]],
     ["20:00","숙소 체크인","하구 둘이서 있기","","house","#C9F0DF"]
   ],
   2:[
@@ -101,12 +105,12 @@ pencil:'<path class="dd" d="M8 28l3-8 15-15 5 5-15 15z M11 20l5 5 M23 8l5 5 M8 2
 fort:'<path class="dd" d="M4 31h28 M6 31v-14h4v4h4v-4h4v4h4v-4h4v4h4v-4h0v14 M15 31v-6q3-4 6 0v6"/><path class="dd" d="M24 8a4 4 0 1 0 6 3" style="stroke:#E06A80"/>',
 whoosh:'<path class="dd" d="M12 10q-1 13 1 15h17q3-1 2-7q-1-7-9-8z M16 14h5v5h-5z M2 14h6 M0 20h7 M3 26h6"/><circle class="dd" cx="17" cy="28" r="2.3"/><circle class="dd" cx="27" cy="28" r="2.3"/>'};
 /* 장소 이름으로 검색이 애매하면 여기에 검색어 지정 */
-const MAPQ={"에조치":"에조치 수원 행궁동","경안당":"경안당 수원 행궁동","럭희":"럭희 행궁동점","뮤니버스":"뮤니버스 행궁동","남문통닭 타임빌라스 수원점":"남문통닭 타임빌라스 수원점"};
+const MAPQ={"매산약방":"매산약방 수원","삼미락":"삼미락 수원역","에조치":"에조치 수원 행궁동","경안당":"경안당 수원 행궁동","럭희":"럭희 행궁동점","뮤니버스":"뮤니버스 행궁동","남문통닭 타임빌라스 수원점":"남문통닭 타임빌라스 수원점"};
 function mapUrl(n){return "https://map.naver.com/p/search/"+encodeURIComponent(MAPQ[n]||("수원 "+n))}
 const $=id=>document.getElementById(id);
 function show(s){["main","check","detail"].forEach(k=>$("s-"+k).style.display=k===s?"block":"none");window.scrollTo(0,0)}
 function render(d){
-  $("course").innerHTML=COURSE[d].map(x=>`<div class="st wb2"><svg viewBox="0 0 36 36" width="44" height="44" style="flex:none;background:${x[5]};border-radius:50%;padding:4px;border:2px solid #222" aria-hidden="true">${I[x[4]]}</svg><div><p style="font-size:15px;color:#666">${x[0]}</p><p style="font-size:21px;font-weight:700;line-height:1.1">${x[1]}</p><p style="font-size:16px">${x[2]}</p>${x[3]?`<p style="font-size:16px;color:#C2546A">@ ${x[3].split(", ").map(n=>`<a href="${mapUrl(n)}" target="_blank" rel="noopener" style="color:#C2546A;text-decoration:underline wavy;text-underline-offset:3px">${n}</a>`).join(", ")}</p>`:""}${x[6]?`<p style="display:inline-block;font-size:15px;background:#FFF1B8;border:1.5px solid #222;border-radius:10px;padding:0 8px;margin-top:3px">${x[6]}</p>`:""}</div></div>`).join("");
+  $("course").innerHTML=COURSE[d].map(x=>`<div class="st wb2"><svg viewBox="0 0 36 36" width="44" height="44" style="flex:none;background:${x[5]};border-radius:50%;padding:4px;border:2px solid #222" aria-hidden="true">${I[x[4]]}</svg><div><p style="font-size:15px;color:#666">${x[0]}</p><p style="font-size:21px;font-weight:700;line-height:1.1">${x[1]}</p><p style="font-size:16px">${x[2]}</p>${x[3]?`<p style="font-size:16px;color:#C2546A">@ ${x[3].split(", ").map(n=>`<a href="${mapUrl(n)}" target="_blank" rel="noopener" style="color:#C2546A;text-decoration:underline wavy;text-underline-offset:3px">${n}</a>`).join(", ")}</p>`:""}${x[7]?`<div style="margin-top:6px">${x[7].map((o,k)=>`<div style="display:flex;gap:6px;align-items:baseline;margin-top:4px"><span style="flex:none;width:20px;height:20px;border:1.5px solid #222;border-radius:50%;font-size:14px;display:inline-flex;align-items:center;justify-content:center;background:#FFF9EC">${k+1}</span><p style="font-size:16px;line-height:1.25"><a href="${mapUrl(o[0])}" target="_blank" rel="noopener" style="color:#C2546A;text-decoration:underline wavy;text-underline-offset:3px">${o[0]}</a><br><span style="color:#666;font-size:15px">${o[1]}</span></p></div>`).join("")}</div>`:""}${x[6]?`<p style="display:inline-block;font-size:15px;background:#FFF1B8;border:1.5px solid #222;border-radius:10px;padding:0 8px;margin-top:3px">${x[6]}</p>`:""}</div></div>`).join("");
   document.querySelectorAll(".tab[data-d]").forEach(t=>t.classList.toggle("on",t.dataset.d==d));
 }
 document.querySelectorAll(".tab[data-d]").forEach(t=>t.onclick=()=>render(t.dataset.d));
