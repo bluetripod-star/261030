@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>수원 여행 동행권 검사소</title>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#FFF9EC;color:#222;font-family:'Gaegu',cursive}
+.ph{max-width:420px;margin:0 auto;padding:22px 18px 70px;min-height:100vh;min-height:100dvh;position:relative;overflow:hidden}
+.wb{border:2px solid #222;border-radius:255px 14px 225px 14px/14px 225px 14px 255px}
+.wb2{border:2px solid #222;border-radius:14px 225px 14px 255px/225px 14px 255px 14px}
+.dd{fill:none;stroke:#222;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tab{font-family:'Gaegu',cursive;font-size:18px;padding:4px 16px;background:#fff;color:#222;cursor:pointer}
+.tab.on{background:#C9F0DF}
+.st{display:flex;gap:12px;align-items:center;margin-bottom:12px;background:#fff;padding:8px 12px}
+p{margin:0}
+.c{text-align:center}
+@keyframes wig{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.wig{animation:wig 1.6s ease-in-out infinite;transform-origin:center}
+.wall{display:block;position:absolute;left:0;bottom:8px;width:100%}
+</style>
+</head>
+<body>
+<div class="ph">
+
+<div id="s-main">
+<svg viewBox="0 0 300 40" width="100%" style="display:block;margin:10px 0 8px" aria-hidden="true">
+<path class="dd" d="M20 22l3-8 3 8-8-4h10z M270 14q3 6 8 6q-5 1-8 7q-2-6-8-7q6-1 8-6z M150 28q-4-6 0-9q3-2 4 2q2-4 5-2q4 3-9 9z" style="stroke:#E06A80"/>
+</svg>
+<p class="c" style="font-size:17px">2026. 10. 30 - 31</p>
+<p class="c" style="font-size:36px;font-weight:700;margin-bottom:4px;line-height:1.15">수원 여행<br>동행권 검사소</p>
+<p class="c" style="font-size:19px;margin-bottom:36px">동행권을 보여주면 문이 열려요</p>
+<label class="wb2 c" style="display:block;background:#fff;padding:30px 16px;cursor:pointer;margin-bottom:12px">
+<svg viewBox="0 0 60 40" width="56" aria-hidden="true"><path class="dd" d="M6 8q24-3 48 0v8q-5 4 0 8v8q-24 3-48 0v-8q5-4 0-8z M24 14v12 M30 14l4 6-4 6"/></svg>
+<p style="font-size:24px;font-weight:700;margin:4px 0 2px">표 검사하겠습니다~</p>
+<p style="font-size:17px;color:#666">클릭해서 올려조</p>
+<input type="file" accept="image/*" id="up" style="display:none">
+</label>
+<div id="err" class="wb c" style="display:none;background:#FFE3E3;padding:10px 12px">
+<p style="font-size:19px;color:#A12A2A;line-height:1.3">어라, 이건 내가 준 동행권이 아닌데?<br>다시 찾아봐!</p>
+</div>
+</div>
+
+<div id="s-check" class="c" style="display:none;padding-top:150px">
+<svg viewBox="0 0 80 80" width="90" class="wig" aria-hidden="true"><circle class="dd" cx="34" cy="34" r="20"/><path class="dd" d="M48 48l18 18 M26 30q4-6 10-4"/></svg>
+<p style="font-size:25px;font-weight:700;margin-top:10px">진짜 동행권인지<br>꼼꼼히 보는 중...</p>
+</div>
+
+<div id="s-detail" style="display:none">
+<div class="wb c" style="background:#C9F0DF;padding:10px 14px;margin-bottom:14px;position:relative">
+<p style="font-size:17px">통과! 발급대상: 너</p>
+<p style="font-size:29px;font-weight:700;line-height:1.2">수원 1박 2일 코스</p>
+<svg viewBox="0 0 40 40" width="34" style="position:absolute;right:8px;top:-12px" aria-hidden="true"><path class="dd" d="M20 4l4 11 11 1-9 7 3 11-9-6-9 6 3-11-9-7 11-1z" style="stroke:#D9A400"/></svg>
+</div>
+<div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px">
+<button class="tab wb on" data-d="1">10.30 금</button>
+<button class="tab wb" data-d="2">10.31 토</button>
+</div>
+<div id="course"></div>
+<button class="tab wb" id="back" style="display:block;margin:14px auto 0">처음으로</button>
+</div>
+
+<svg class="wall" viewBox="0 0 300 36" aria-hidden="true">
+<path class="dd" d="M0 30h300 M10 30v-12h10v6h10v-6h10v6h10v-6h10v12 M240 30v-12h10v6h10v-6h10v6h10v-6h10v12" style="stroke:#9A8A6A"/>
+</svg>
+</div>
+
+<script>
+/* ===== 코스 데이터: 장소 정해지면 여기만 수정 ===== */
+/* [시간, 제목, 한마디, 장소(비우면 숨김), 아이콘, 배경색] */
+const COURSE={
+  1:[
+    ["16:00","수원역에서 만나기","얼른 갈게!","","train","#FFF1B8"],
+    ["18:00","마싯게 저녁식사~","배고프게 와!","","bowl","#FFD6DC"],
+    ["20:00","숙소 체크인","하구 둘이서 있기","","house","#C9F0DF"]
+  ],
+  2:[
+    ["12:00","체크아웃하고 점심","느긋하게 일어나기","","rice","#FFF1B8"],
+    ["14:00","소품샵 구경하기","하나씩 골라주기","","bag","#FFD6DC"],
+    ["16:00","카페 가기","잠깐 쉬어가기","","cup","#C9F0DF"],
+    ["18:00","서울로 슝~","다음 여행 약속하기","","whoosh","#E6E0FF"]
+  ]
+};
+/* =============================================== */
+
+const REF="1b0284557754f455532a56113aa12a4935415262f67148211b496949ad00e200",RATIO=950/636,MAXD=35;
+const I={
+train:'<path class="dd" d="M7 10q-1 14 1 16h20q3-1 2-8q-1-7-9-8z M11 14h5v5h-5z M20 14h4v5 M4 32h28"/><circle class="dd" cx="12" cy="28" r="2.5"/><circle class="dd" cx="25" cy="28" r="2.5"/>',
+bowl:'<path class="dd" d="M5 18h26q-2 12-13 12q-11 0-13-12z M12 13q-2-4 1-7 M18 13q-2-4 1-7 M24 13q-2-4 1-7"/>',
+house:'<path class="dd" d="M5 17l13-11 13 11 M8 15v16h20v-16"/><path class="dd" d="M14 22q2-3 4 0q2-3 4 0q-2 4-4 5q-2-1-4-5z" style="stroke:#E06A80"/>',
+rice:'<path class="dd" d="M6 16h24q-1 12-12 13q-11-1-12-13z M9 16q0-6 9-6q9 0 9 6 M26 5l-6 9 M30 7l-8 8"/>',
+bag:'<path class="dd" d="M7 12h22l-2 19h-18z M13 12q0-7 5-7q5 0 5 7"/><path class="dd" d="M15 20l3 2 3-2" style="stroke:#E06A80"/>',
+cup:'<path class="dd" d="M6 13h20v8q0 9-10 9q-10 0-10-9z M26 15q6 0 5 5q-1 4-5 3 M11 9q-2-3 1-5 M17 9q-2-3 1-5"/>',
+whoosh:'<path class="dd" d="M12 10q-1 13 1 15h17q3-1 2-7q-1-7-9-8z M16 14h5v5h-5z M2 14h6 M0 20h7 M3 26h6"/><circle class="dd" cx="17" cy="28" r="2.3"/><circle class="dd" cx="27" cy="28" r="2.3"/>'};
+const $=id=>document.getElementById(id);
+function show(s){["main","check","detail"].forEach(k=>$("s-"+k).style.display=k===s?"block":"none");window.scrollTo(0,0)}
+function render(d){
+  $("course").innerHTML=COURSE[d].map(x=>`<div class="st wb2"><svg viewBox="0 0 36 36" width="44" height="44" style="flex:none;background:${x[5]};border-radius:50%;padding:4px;border:2px solid #222" aria-hidden="true">${I[x[4]]}</svg><div><p style="font-size:15px;color:#666">${x[0]}</p><p style="font-size:21px;font-weight:700;line-height:1.1">${x[1]}</p><p style="font-size:16px">${x[2]}</p>${x[3]?`<p style="font-size:16px;color:#C2546A">@ ${x[3]}</p>`:""}</div></div>`).join("");
+  document.querySelectorAll(".tab[data-d]").forEach(t=>t.classList.toggle("on",t.dataset.d==d));
+}
+document.querySelectorAll(".tab[data-d]").forEach(t=>t.onclick=()=>render(t.dataset.d));
+function hash(d,w,h){const g=new Float64Array(w*h);for(let i=0;i<w*h;i++){const a=d[i*4+3]/255;g[i]=0.299*(d[i*4]*a+255*(1-a))+0.587*(d[i*4+1]*a+255*(1-a))+0.114*(d[i*4+2]*a+255*(1-a))}
+const W=17,H=16,s=[];for(let y=0;y<H;y++){const y0=Math.floor(y*h/H),y1=Math.max(Math.floor((y+1)*h/H),y0+1);for(let x=0;x<W;x++){const x0=Math.floor(x*w/W),x1=Math.max(Math.floor((x+1)*w/W),x0+1);let t=0;for(let yy=y0;yy<y1;yy++)for(let xx=x0;xx<x1;xx++)t+=g[yy*w+xx];s.push(t/((y1-y0)*(x1-x0)))}}
+let b='';for(let y=0;y<H;y++)for(let x=0;x<16;x++)b+=s[y*W+x]>s[y*W+x+1]+1.5?'1':'0';return b}
+function refBits(){return REF.split('').map(c=>parseInt(c,16).toString(2).padStart(4,'0')).join('')}
+function check(img){const sc=Math.min(1,1600/Math.max(img.width,img.height)),w=Math.round(img.width*sc),h=Math.round(img.height*sc);
+if(Math.abs(w/h-RATIO)/RATIO>0.04)return false;const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(img,0,0,w,h);
+const b=hash(x.getImageData(0,0,w,h).data,w,h),r=refBits();let n=0;for(let i=0;i<256;i++)if(b[i]!==r[i])n++;return n<=MAXD}
+$("up").onchange=e=>{const f=e.target.files[0];if(!f)return;$("err").style.display="none";show("check");const u=URL.createObjectURL(f),img=new Image();
+img.onload=()=>{let ok=false;try{ok=check(img)}catch(_){}URL.revokeObjectURL(u);setTimeout(()=>{if(ok){render(1);show("detail")}else{show("main");$("err").style.display="block"}},1200)};
+img.onerror=()=>{show("main");$("err").style.display="block"};img.src=u;e.target.value=""};
+$("back").onclick=()=>show("main");
+</script>
+</body>
+</html>
