@@ -72,7 +72,7 @@ p{margin:0}
 /* [시간, 제목, 한마디, 장소(비우면 숨김), 아이콘, 배경색] */
 const COURSE={
   1:[
-    ["16:00","수원역에서 만나기","얼른 갈게!","","train","#FFF1B8"],
+    ["16:00","수원역에서 만나기","얼른 갈게!","수원역","train","#FFF1B8"],
     ["18:00","마싯게 저녁식사~","낙곱새 먹자! 배고프게 와","삼미락","bowl","#FFD6DC"],
     ["20:00","숙소 체크인","하구 둘이서 있기","","house","#C9F0DF"]
   ],
@@ -100,10 +100,13 @@ glasses:'<circle class="dd" cx="10" cy="20" r="6"/><circle class="dd" cx="26" cy
 pencil:'<path class="dd" d="M8 28l3-8 15-15 5 5-15 15z M11 20l5 5 M23 8l5 5 M8 28l3-1"/>',
 fort:'<path class="dd" d="M4 31h28 M6 31v-14h4v4h4v-4h4v4h4v-4h4v4h4v-4h0v14 M15 31v-6q3-4 6 0v6"/><path class="dd" d="M24 8a4 4 0 1 0 6 3" style="stroke:#E06A80"/>',
 whoosh:'<path class="dd" d="M12 10q-1 13 1 15h17q3-1 2-7q-1-7-9-8z M16 14h5v5h-5z M2 14h6 M0 20h7 M3 26h6"/><circle class="dd" cx="17" cy="28" r="2.3"/><circle class="dd" cx="27" cy="28" r="2.3"/>'};
+/* 장소 이름으로 검색이 애매하면 여기에 검색어 지정 */
+const MAPQ={"대왕문구완구":"수원 정조로860번길 2-3","럭희":"럭희 행궁동점","뮤니버스":"뮤니버스 행궁동"};
+function mapUrl(n){return "https://map.naver.com/p/search/"+encodeURIComponent(MAPQ[n]||("수원 "+n))}
 const $=id=>document.getElementById(id);
 function show(s){["main","check","detail"].forEach(k=>$("s-"+k).style.display=k===s?"block":"none");window.scrollTo(0,0)}
 function render(d){
-  $("course").innerHTML=COURSE[d].map(x=>`<div class="st wb2"><svg viewBox="0 0 36 36" width="44" height="44" style="flex:none;background:${x[5]};border-radius:50%;padding:4px;border:2px solid #222" aria-hidden="true">${I[x[4]]}</svg><div><p style="font-size:15px;color:#666">${x[0]}</p><p style="font-size:21px;font-weight:700;line-height:1.1">${x[1]}</p><p style="font-size:16px">${x[2]}</p>${x[3]?`<p style="font-size:16px;color:#C2546A">@ ${x[3]}</p>`:""}</div></div>`).join("");
+  $("course").innerHTML=COURSE[d].map(x=>`<div class="st wb2"><svg viewBox="0 0 36 36" width="44" height="44" style="flex:none;background:${x[5]};border-radius:50%;padding:4px;border:2px solid #222" aria-hidden="true">${I[x[4]]}</svg><div><p style="font-size:15px;color:#666">${x[0]}</p><p style="font-size:21px;font-weight:700;line-height:1.1">${x[1]}</p><p style="font-size:16px">${x[2]}</p>${x[3]?`<p style="font-size:16px;color:#C2546A">@ ${x[3].split(", ").map(n=>`<a href="${mapUrl(n)}" target="_blank" rel="noopener" style="color:#C2546A;text-decoration:underline wavy;text-underline-offset:3px">${n}</a>`).join(", ")}</p>`:""}</div></div>`).join("");
   document.querySelectorAll(".tab[data-d]").forEach(t=>t.classList.toggle("on",t.dataset.d==d));
 }
 document.querySelectorAll(".tab[data-d]").forEach(t=>t.onclick=()=>render(t.dataset.d));
